@@ -63,7 +63,7 @@ const Dashboard = () => {
           const [isStartTestButtonVisible, setIsStartTestButtonVisible] = useState(true);
 
           const countdownStartRef = useRef(Date.now());
-          const characterIdxRef = useRef(10); // UseRef to track character index
+          const characterIdxRef = useRef(0); 
 
           const timeItems = [
                     { key: "1", label: "3 second" },
@@ -133,7 +133,7 @@ const Dashboard = () => {
                               <Header style={headerStyle}>
                                         {isStartTestButtonVisible && (
                                                   <>
-                                                            <Button type="primary" onClick={startTest}>
+                                                            <Button type="primary" onClick={startTest} className="mx-4">
                                                                       Start Test
                                                             </Button>
                                                             <Button type="primary" onClick={goToGame}>
