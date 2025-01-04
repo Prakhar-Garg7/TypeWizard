@@ -12,7 +12,7 @@ exports.setSpeed = async (req, res, next) => {
                     console.log("user: ", user);
 
                     // Calculate the new average speed
-                    const newSpeed = parseInt((user.speed * user.matchesPlayed + req.body.currSpeed) / (user.matchesPlayed + 1));
+                    const newSpeed = (user.speed * user.matchesPlayed + req.body.currSpeed) / (user.matchesPlayed + 1);
 
                     // Update the user's speed and matches played
                     user.speed = newSpeed;
@@ -22,7 +22,7 @@ exports.setSpeed = async (req, res, next) => {
                     if (!Array.isArray(user.speedsList)) {
                               user.speedsList = []; // Initialize speedsList if it doesn't exist
                     }
-                    user.speedsList.push(parseInt(req.body.currSpeed));
+                    user.speedsList.push(req.body.currSpeed);
 
                     // Save the user
                     await user.save();

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { DownOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { Dropdown, Layout, Statistic, Col, Space, Button } from "antd";
@@ -56,62 +56,70 @@ const Dashboard = () => {
           const dispatch = useDispatch();
           const { userData, logout } = useAuth();
           const navigate = useNavigate();
-          const [selectedTime, setSelectedTime] = useState(5); // Default: 5 seconds
+          const [selectedTime, setSelectedTime] = useState(30);
           const [goodIndices, setGoodIndices] = useState([]);
           const [badIndices, setBadIndices] = useState([]);
-          const [characterIdx, setCharacterIdx] = useState(0);
+          const [isTimerVisible, setIsTimerVisible] = useState(false);
+          const [isStartTestButtonVisible, setIsStartTestButtonVisible] = useState(true);
 
-          // Store the countdown start time
           const countdownStartRef = useRef(Date.now());
-
-          useEffect(() => {
-                    // Update countdownStartRef whenever selectedTime changes
-                    countdownStartRef.current = Date.now();
-          }, [selectedTime]);
+          const characterIdxRef = useRef(10); // UseRef to track character index
 
           const timeItems = [
-                    { key: "1", label: "2 second" },
-                    { key: "2", label: "5 second" },
-                    { key: "3", label: "3 minute" },
-                    { key: "4", label: "5 minute" },
+                    { key: "1", label: "3 second" },
+                    { key: "2", label: "20 second" },
+                    { key: "3", label: "30 second" },
+                    { key: "4", label: "40 second" },
           ];
 
           const handleMenuClick = ({ key }) => {
                     const selected = timeItems.find((item) => item.key === key);
-
-                    // Extract numeric value from the label
                     const timeValue = parseInt(selected.label);
 
-                    // Check the unit of time and convert to seconds
                     let timeInSeconds = 0;
                     if (selected.label.includes("second")) {
-                              timeInSeconds = timeValue; // Time is already in seconds
+                              timeInSeconds = timeValue;
                     } else if (selected.label.includes("minute")) {
-                              timeInSeconds = timeValue * 60; // Convert minutes to seconds
+                              timeInSeconds = timeValue * 60;
                     }
 
-                    // Set the selected time in seconds
                     setSelectedTime(timeInSeconds);
           };
 
           const handleKeyUp = (event) => {
                     const charPressed = event.key;
-                    if (charPressed === text[characterIdx]) {
-                              setGoodIndices((prev) => [...prev, characterIdx]);
+                    if (charPressed === text[characterIdxRef.current]) {
+                              setGoodIndices((prev) => [...prev, characterIdxRef.current]);
                     } else {
-                              setBadIndices((prev) => [...prev, characterIdx]);
+                              setBadIndices((prev) => [...prev, characterIdxRef.current]);
                     }
-                    setCharacterIdx(characterIdx + 1);
+                    characterIdxRef.current += 1;
+                    console.log("characterIdx: " + characterIdxRef.current);
           };
 
-          const onFinish = () => {
-                    const newSpeedData = characterIdx / selectedTime;
+          const onFinish = async () => {
+                    const newSpeedData = characterIdxRef.current / (selectedTime / 60.0);
+                    console.log(
+                              "newSpeed: " + newSpeedData + ", characterIdx: " + characterIdxRef.current
+                    );
                     dispatch(getNewSpeed({ currSpeed: newSpeedData, id: userData._id }));
-                    navigate("/result", { state: { characterIdx, selectedTime } });
+
+                    navigate("/result", {
+                              state: { characterIdx: characterIdxRef.current, selectedTime },
+                    });
           };
 
           const handleLogout = async () => {
                     await logout();
+          };
+
+          const startTest = () => {
+                    countdownStartRef.current = Date.now();
+                    characterIdxRef.current = 0; // Reset characterIdx for a new test
+                    setGoodIndices([]);
+                    setBadIndices([]);
+                    setIsTimerVisible(true);
+                    setIsStartTestButtonVisible(false);
           };
 
           const textArray = text.split("");
@@ -119,9 +127,11 @@ const Dashboard = () => {
           return (
                     <Layout style={layoutStyle}>
                               <Header style={headerStyle}>
-                                        <Button type="primary" onClick={handleLogout}>
-                                                  Logout
-                                        </Button>
+                                        {isStartTestButtonVisible && (
+                                                  <Button type="primary" onClick={startTest}>
+                                                            Start Test
+                                                  </Button>
+                                        )}
                               </Header>
                               <Layout>
                                         <Sider width="25%" style={siderStyle}>
@@ -148,13 +158,15 @@ const Dashboard = () => {
                                                                       </Space>
                                                             </button>
                                                   </Dropdown>
-                                                  <Col span={12}>
-                                                            <Countdown
-                                                                      title="Countdown"
-                                                                      value={countdownStartRef.current + selectedTime * 1000}
-                                                                      onFinish={onFinish}
-                                                            />
-                                                  </Col>
+                                                  {isTimerVisible && (
+                                                            <Col span={12}>
+                                                                      <Countdown
+                                                                                title="Countdown"
+                                                                                value={countdownStartRef.current + selectedTime * 1000}
+                                                                                onFinish={onFinish}
+                                                                      />
+                                                            </Col>
+                                                  )}
                                         </Sider>
                                         <Content style={contentStyle} onKeyUp={handleKeyUp} tabIndex={0}>
                                                   {textArray.map((char, idx) => (
@@ -165,7 +177,7 @@ const Dashboard = () => {
                                                                                           ? "blue"
                                                                                           : badIndices.includes(idx)
                                                                                                     ? "red"
-                                                                                                    : idx === characterIdx
+                                                                                                    : idx === characterIdxRef.current
                                                                                                               ? "yellow"
                                                                                                               : "inherit",
                                                                       }}
@@ -175,7 +187,11 @@ const Dashboard = () => {
                                                   ))}
                                         </Content>
                               </Layout>
-                              <Footer style={footerStyle}>Footer</Footer>
+                              <Footer style={footerStyle}>
+                                        <Button type="primary" onClick={handleLogout}>
+                                                  Logout
+                                        </Button>
+                              </Footer>
                     </Layout>
           );
 };

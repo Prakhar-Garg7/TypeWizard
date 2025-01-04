@@ -64,6 +64,8 @@ const Result = () => {
           const { userData } = useAuth();
           const navigate = useNavigate();
 
+          console.log("characterIdx1" + {characterIdx});
+
           // Prepare data for the line chart
           const data = {
                     labels: speedsList.map((_, idx) => idx), // Indices as labels (x-axis)
@@ -115,7 +117,7 @@ const Result = () => {
                               <Layout>
                                         <Content style={contentStyle}>
                                                   <p>Characters Typed: {characterIdx}</p>
-                                                  <p>Selected Time: {selectedTime} minutes</p>
+                                                  <p>Selected Time: {selectedTime} seconds</p>
                                                   {loading ? (
                                                             <p>Loading...</p>
                                                   ) : (

@@ -1,11 +1,21 @@
 const express = require('express');
 const app = express();
+const http = require("http");
 const cors = require('cors');
 const mongoose = require('mongoose');
 const authRouter = require('./Routes/authRoutes');
 const speedRouter = require('./Routes/speedRoutes');
 const leaderBoardRouter = require('./Routes/leaderBoardRoutes');
+const {Server} = require('socket.io');
 require('dotenv').config();
+
+const server = http.createServer(app);
+const io = new Server(server);
+
+// Socket.io
+io.on('connection', (socket) => {
+          console.log("A new user has connected", socket.id);
+})
 
 const PORT = process.env.PORT || 8080;
 
@@ -31,5 +41,9 @@ app.use((err, req, res, next) => {
 })
 
 app.listen(PORT, () => {
-          console.log(`Server is running on ${PORT}`);
+          console.log(`app is running on ${PORT}`);
+})
+
+server.listen(9000, () => {
+          console.log(`Server is running on 9000`);
 })
