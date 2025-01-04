@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { Layout } from "antd";
+import { Layout, Button } from "antd";
+import { useNavigate } from "react-router-dom";
 
 const { Header, Footer, Content } = Layout;
 
@@ -39,9 +40,14 @@ const layoutStyle = {
 };
 
 const LeaderBoard = () => {
+          const navigate = useNavigate();
           const { loading, isError, errorMessage, mySpeed, myRank, playersList, myName } = useSelector(
                     (state) => state.leaderBoard
           );
+
+          const goToDashboard = async () => {
+                    navigate("/dashboard");
+          }
 
           return (
                     <Layout style={layoutStyle}>
@@ -69,7 +75,9 @@ const LeaderBoard = () => {
                                                   )}
                                         </Content>
                               </Layout>
-                              <Footer style={footerStyle}>Footer</Footer>
+                              <Footer style={footerStyle}><Button type="primary" onClick={goToDashboard}>
+                                                  Go to dashboard
+                                        </Button></Footer>
                     </Layout>
           );
 };

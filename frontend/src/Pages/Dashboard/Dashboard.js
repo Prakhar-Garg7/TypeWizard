@@ -67,7 +67,7 @@ const Dashboard = () => {
 
           const timeItems = [
                     { key: "1", label: "3 second" },
-                    { key: "2", label: "20 second" },
+                    { key: "2", label: "5 second" },
                     { key: "3", label: "30 second" },
                     { key: "4", label: "40 second" },
           ];

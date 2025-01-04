@@ -107,6 +107,10 @@ const Result = () => {
                     navigate("/leaderBoard");
           }
 
+          const goToDashboard = async () => {
+                    navigate("/dashboard");
+          }
+
           return (
                     <Layout style={layoutStyle}>
                               <Header style={headerStyle}>
@@ -131,7 +135,9 @@ const Result = () => {
 
                                         </Content>
                               </Layout>
-                              <Footer style={footerStyle}>Footer</Footer>
+                              <Footer style={footerStyle}><Button type="primary" onClick={goToDashboard}>
+                                                  Go to dashboard
+                                        </Button></Footer>
                     </Layout>
           );
 };
