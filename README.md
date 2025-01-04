@@ -11,4 +11,5 @@ A platform where users can improve their typing skills
 - User can set time for practice session
 - Result page for analysis
 - Leaderboard
+- Typing game
 
