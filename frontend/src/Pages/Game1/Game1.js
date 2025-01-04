@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { Layout, Button } from "antd";
 import { io } from "socket.io-client";
 import { useAuth } from "../../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const { Header, Footer, Sider, Content } = Layout;
 
@@ -50,6 +51,7 @@ const text = `have you that zeal`;
 
 const Game1 = () => {
           const { userData, logout } = useAuth();
+          const navigate = useNavigate();
           const [waitingForPlayers, setWaitingForPlayers] = useState(true);
           const [socket, setSocket] = useState(null);
           const [goodIndices, setGoodIndices] = useState([]);
@@ -78,6 +80,9 @@ const Game1 = () => {
                     // Listen for "gameWon" event to display the result
                     socketInstance.on("getGameResults", (data) => {
                               setGameResult(data.result); // Set game result (Won/Lost)
+                              setTimeout(() => {
+                                        navigate("/dashboard");
+                              }, 5000);
                     });
 
                     // Cleanup the connection on component unmount
