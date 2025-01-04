@@ -122,15 +122,24 @@ const Dashboard = () => {
                     setIsStartTestButtonVisible(false);
           };
 
+          const goToGame = async() => {
+                    navigate("/game");
+          }
+
           const textArray = text.split("");
 
           return (
                     <Layout style={layoutStyle}>
                               <Header style={headerStyle}>
                                         {isStartTestButtonVisible && (
-                                                  <Button type="primary" onClick={startTest}>
-                                                            Start Test
-                                                  </Button>
+                                                  <>
+                                                            <Button type="primary" onClick={startTest}>
+                                                                      Start Test
+                                                            </Button>
+                                                            <Button type="primary" onClick={goToGame}>
+                                                                      Play Game
+                                                            </Button>
+                                                  </>
                                         )}
                               </Header>
                               <Layout>
@@ -140,6 +149,7 @@ const Dashboard = () => {
                                                                       items: timeItems,
                                                                       onClick: handleMenuClick,
                                                             }}
+                                                            disabled={isTimerVisible}
                                                   >
                                                             <button
                                                                       onClick={(e) => e.preventDefault()}
