@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const authRouter = require('./Routes/authRoutes');
 const speedRouter = require('./Routes/speedRoutes');
 const leaderBoardRouter = require('./Routes/leaderBoardRoutes');
+const profileRouter = require('./Routes/profileRoutes');
 const { Server } = require('socket.io');
 require('dotenv').config();
 
@@ -103,6 +104,7 @@ app.use(express.json());
 app.use('/api/auth', authRouter);
 app.use('/api/speed', speedRouter);
 app.use('/api/leaderBoard', leaderBoardRouter);
+app.use('/api/profile', profileRouter);
 
 // MongoDB connection
 mongoose.connect('mongodb://127.0.0.1:27017/authentication')

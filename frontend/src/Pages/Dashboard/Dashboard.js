@@ -126,6 +126,10 @@ const Dashboard = () => {
                     navigate("/game");
           }
 
+          const goToProfilePage = async() => {
+                    navigate("/profile");
+          }
+
           const textArray = text.split("");
 
           return (
@@ -136,8 +140,11 @@ const Dashboard = () => {
                                                             <Button type="primary" onClick={startTest} className="mx-4">
                                                                       Start Test
                                                             </Button>
-                                                            <Button type="primary" onClick={goToGame}>
+                                                            <Button type="primary" onClick={goToGame} className="mx-4">
                                                                       Play Game
+                                                            </Button>
+                                                            <Button type="primary" onClick={goToProfilePage} className="mx-4">
+                                                                      Profile
                                                             </Button>
                                                   </>
                                         )}

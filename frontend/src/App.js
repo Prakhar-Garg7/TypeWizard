@@ -8,6 +8,7 @@ import { useAuth } from './contexts/AuthContext';
 import Result from './Pages/Result/Result';
 import LeaderBoard from './Pages/LeaderBoard/LeaderBoard';
 import Game1 from './Pages/Game1/Game1';
+import Profile from './Pages/Profile/Profile';
 
 const App = () => {
   const {isAuthenticated} = useAuth();
@@ -19,6 +20,7 @@ const App = () => {
       <Route path='/result' element={<Result/>}></Route>
       <Route path='/leaderBoard' element={<LeaderBoard/>}></Route>
       <Route path='/game' element={<Game1/>}></Route>
+      <Route path='/profile' element={<Profile/>}></Route>
     </Routes>
   </Router>
 }

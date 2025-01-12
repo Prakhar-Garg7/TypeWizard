@@ -1,35 +1,37 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-          name:{
+          name: {
                     type: String,
                     required: true
-          }, 
-          email:{
+          },
+          email: {
                     type: String,
                     unique: true,
                     required: true
           },
-          role:{
+          role: {
                     type: String,
                     default: "user"
           },
-          password:{
-                    type:String,
+          password: {
+                    type: String,
                     required: true
           },
-          speed:{
+          speed: {
                     type: Number,
                     default: 0
           },
-          matchesPlayed:{
+          matchesPlayed: {
                     type: Number,
                     default: 0
           },
           speedsList: {
-                    type: [Number], 
+                    type: [Number],
                     default: []
-          }
+          },
+          friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+          friendRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
 });
 
 const User = mongoose.model('User', userSchema);
